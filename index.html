@@ -553,27 +553,46 @@ socket.onmessage = (event) => {
         // PWA Service Worker Registration
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
+                // Create manifest file dynamically
+                const manifest = {
+                    name: "RFID WebSocket Testing App",
+                    short_name: "RFID WS",
+                    description: "RFID WebSocket Testing Application for Onetime/Trident",
+                    start_url: "./",
+                    display: "standalone",
+                    theme_color: "#e8e8e8",
+                    background_color: "#f0f0f0",
+                    icons: [
+                        {
+                            src: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgdmlld0JveD0iMCAwIDEyOCAzMjciIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJhIj48c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiMwMDAiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiM0NTVBMzgiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB4PSIyMSIgeT0iNDMiIHdpZHRoPSI4NiIgaGVpZ2h0PSIyNDIiIGZpbGw9IiNGRkYiLz48dGV4dCB4PSIyMiIgeT0iNTgiIGZpbGw9IiMzMzMiIGZvbnQtZmFtaWx5PSJtb25vc3BhY2UiIGZvbnQtc2l6ZT0iMTAiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiIGZvbnQtd2VpZ2h0PSJib2xkIj5SRklEPC90ZXh0Pjwvc3ZnPg==",
+                            sizes: "128x128",
+                            type: "image/svg+xml"
+                        }
+                    ]
+                };
+                
+                // Create and inject manifest
+                const manifestBlob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
+                const manifestUrl = URL.createObjectURL(manifestBlob);
+                document.getElementById('manifestLink').href = manifestUrl;
+                
+                // Create service worker code
                 const swCode = `
                     const CACHE_NAME = 'rfid-websocket-v1';
-                    const urlsToCache = ['/'];
                     
                     self.addEventListener('install', (event) => {
-                        event.waitUntil(
-                            caches.open(CACHE_NAME)
-                                .then((cache) => cache.addAll(urlsToCache))
-                        );
+                        console.log('Service Worker installing...');
+                        self.skipWaiting();
+                    });
+                    
+                    self.addEventListener('activate', (event) => {
+                        console.log('Service Worker activating...');
+                        event.waitUntil(self.clients.claim());
                     });
                     
                     self.addEventListener('fetch', (event) => {
-                        event.respondWith(
-                            caches.match(event.request)
-                                .then((response) => {
-                                    if (response) {
-                                        return response;
-                                    }
-                                    return fetch(event.request);
-                                })
-                        );
+                        // Let all requests pass through - minimal caching for PWA requirements
+                        event.respondWith(fetch(event.request));
                     });
                 `;
                 
@@ -582,10 +601,14 @@ socket.onmessage = (event) => {
                 
                 navigator.serviceWorker.register(swUrl)
                     .then((registration) => {
-                        console.log('SW registered: ', registration);
+                        console.log('SW registered successfully');
+                        // Check for updates
+                        registration.addEventListener('updatefound', () => {
+                            console.log('SW update found');
+                        });
                     })
-                    .catch((registrationError) => {
-                        console.log('SW registration failed: ', registrationError);
+                    .catch((error) => {
+                        console.log('SW registration failed:', error);
                     });
             });
         }
