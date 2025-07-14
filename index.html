@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Onetime/Trident RFID Websocket Testing Application</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#e8e8e8">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="RFID WebSocket">
+    <meta name="description" content="RFID WebSocket Testing Application for Onetime/Trident">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiUkZJRCBXZWJTb2NrZXQgVGVzdGluZyBBcHAiLCJzaG9ydF9uYW1lIjoiUkZJRCBXUyIsImRlc2NyaXB0aW9uIjoiUkZJRCBXZWJTb2NrZXQgVGVzdGluZyBBcHBsaWNhdGlvbiBmb3IgT25ldGltZS9UcmlkZW50IiwiaWNvbnMiOlt7InNyYyI6ImRhdGE6aW1hZ2Uvc3ZnK3htbDtiYXNlNjQsUEhOMlp5QjNhV1IwYUQwaU1USTRJaUJvWldsbmFIUTlJakV5T0NJZ2RtbGxkMEp2ZUQwaU1DQXdJREV5T0NBek1qY3VJRG9tUW1semJHRWdZM1IxY21VaFBpSTZRbEZPWnlJZ2MzUnliMnRsUFNJak1EQXdJaUJtYVd4c1BTSWpORFUxUVRNNElpOCtQSEpsWTNRZ2VEMGlNakVpSUhrOUlqUXpJaUIzYVdSMGFEMGlPRFlpSUdobGFXZG9kRDBpTWpReUlpQm1hV3hzUFNJalJrWkdJaTgrUEhSbGVIUWdlRDBpTWpJaUlIazlJalU0SWlCbWFXeHNQU0lqTXpNeklpQm1iMjUwTFdaaGJXbHNlVDBpYldGdWIzTndZV05sSWlCbWIyNTBMWE5wZW1VOUlqRXdJaUJrYjIxcGJtRnVkQzFpWVhObGJHbHVaVDBpYldsa1pHeGxJaUJtYjI1MExYZGxhV2RvZEQwaVltOXNaQ0krVWtaSlJGd3ZJaUJwWm1zZ1BHRnVhVzFoZEdWVWNtRnVjMlp2Y20wOUluUnlZVzV6YkdGMFpTZ3RNek00SUMweUtTSStQRzlqSUhScGMwOUlQU2dGSUdGdWFXMWhkR1V1YjI0OVkyOWlkbUhFNEJRVFlBbVpPMEU1ZzlvZFY4PVBpOXdUdlZQS2o2SWlJaVBpd3ZjM1puUGc9PSIsInNpemVzIjoiMTI4eDEyOCIsInR5cGUiOiJpbWFnZS9zdmcreG1sIn0seyJzcmMiOiJkYXRhOmltYWdlL3N2Zyt4bWw7YmFzZTY0LFBITjJaeUIzYVdSMGFEMGlNVEk0SWlCb1pXbG5hSFE5SWpFeU9DSWdkbWxsZDBKdmVEMGlNQ0F3SURFME5DQXpNamNpUGlFa1FtVTZiR0VnWTNSMWNtVWhQaTA2UTFGdVp5SXFOM1J5Ykd0bFBTSWpNREF3SWlCbWFXeHNQU0lqTkRVMVFUTTRJaTQ2UFQ4d1BISmxZM1FnZUQwaU1qRWlJSGs5SWpReklpQjNhV1IwYUQwaU9EWWlJR2hsYVdkb2REMGlNalF5SWlCbWFXeHNQU0lqUmtaR0lpOCtQSFJsZUhRZ2VEMGlNakVpSUhrOUlqVTRJaUJtYVd4c1BTSWpNek16SWlCbWIyNTBMV1poYldsc2VUMGliV0Z1YjNOd1lXTmxJaUJtYjI1MExYTnBlbVU5SWpFeElpQmtiMjFwYm1GdWRDMWlZWE5sYkdsdVpUMGliV2xrWkd4bElpQm1iMjUwTFhkbGFXZG9kRDBpWW05c1pDSStVa1pKUkZ3dlEyRnlaRnd2UTNSeWJDaXBQbWdKTGlqUVZWa2ZoQVd0TmJXVGdseGxJRnY3UVc5V2xlT0ZGa0xOZDJvWW1oNGFuVUxJaUlpSXZjM1puUGc9PSIsInNpemVzIjoiMTQ0eDE0NCIsInR5cGUiOiJpbWFnZS9zdmcreG1sIn1dLCJzdGFydF91cmwiOiIuLyIsImRpc3BsYXkiOiJzdGFuZGFsb25lIiwidGhlbWVfY29sb3IiOiIjZThlOGU4IiwiYmFja2dyb3VuZF9jb2xvciI6IiNmMGYwZjAifQ==">
+    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <style>
+        body {
+            background-color: #f0f0f0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 10px auto;
+            padding: 0 15px;
+        }
+        .card {
+            border: 2px solid #888;
+            border-radius: 0;
+            background-color: #e8e8e8;
+            margin-bottom: 10px;
+            box-shadow: inset 1px 1px 0 #fff, inset -1px -1px 0 #aaa;
+        }
+        .card-header {
+            background: linear-gradient(to bottom, #ddd 0%, #bbb 100%);
+            color: #333;
+            border-bottom: 1px solid #888;
+            padding: 6px 12px;
+            font-size: 0.9em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: inset 1px 1px 0 #fff, inset -1px -1px 0 #999;
+        }
+        .card-body {
+            background-color: #e8e8e8;
+            padding: 15px;
+        }
+        .message-area {
+            height: 320px;
+            overflow-y: auto;
+            background-color: #fff;
+            border: 2px inset #ccc;
+            padding: 4px;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 0.8em;
+            color: #000;
+        }
+        .log-entry {
+            margin-bottom: 2px;
+            padding: 1px 2px;
+            line-height: 1.2;
+            font-family: 'Consolas', monospace;
+        }
+        .log-success { color: #006400; }
+        .log-info { color: #000080; }
+        .log-warning { color: #FF8C00; }
+        .log-danger { color: #8B0000; }
+        .read-entry {
+            color: #000080;
+            margin-bottom: 1px;
+            padding: 1px 2px;
+            line-height: 1.2;
+            font-family: 'Consolas', monospace;
+        }
+        .btn-custom {
+            border-radius: 0;
+            padding: 6px 16px;
+            font-weight: 600;
+            font-size: 0.85em;
+            border: 2px outset #ccc;
+            background: linear-gradient(to bottom, #f0f0f0 0%, #d0d0d0 100%);
+            color: #000;
+            text-shadow: 1px 1px 0 #fff;
+        }
+        .btn-custom:hover {
+            background: linear-gradient(to bottom, #e0e0e0 0%, #c0c0c0 100%);
+        }
+        .btn-custom:active {
+            border: 2px inset #ccc;
+            background: linear-gradient(to bottom, #c0c0c0 0%, #e0e0e0 100%);
+        }
+        .btn-danger {
+            background: linear-gradient(to bottom, #f44336 0%, #da190b 100%);
+            border-color: #f44336;
+            color: #fff;
+            text-shadow: 1px 1px 0 #333;
+        }
+        .btn-danger:hover {
+            background: linear-gradient(to bottom, #da190b 0%, #be0900 100%);
+        }
+        .btn-success {
+            background: linear-gradient(to bottom, #4CAF50 0%, #45a049 100%);
+            border-color: #4CAF50;
+            color: #fff;
+            text-shadow: 1px 1px 0 #333;
+        }
+        .btn-success:hover {
+            background: linear-gradient(to bottom, #45a049 0%, #3d8b40 100%);
+        }
+        .btn-info {
+            background: linear-gradient(to bottom, #2196F3 0%, #0b7dda 100%);
+            border-color: #2196F3;
+            color: #fff;
+            text-shadow: 1px 1px 0 #333;
+        }
+        .btn-info:hover {
+            background: linear-gradient(to bottom, #0b7dda 0%, #0a6bc0 100%);
+        }
+        .btn-outline-light {
+            border: 2px outset #ccc;
+            background: linear-gradient(to bottom, #f0f0f0 0%, #d0d0d0 100%);
+            color: #333;
+            text-shadow: 1px 1px 0 #fff;
+        }
+        .btn-outline-light:hover {
+            background: linear-gradient(to bottom, #e0e0e0 0%, #c0c0c0 100%);
+            color: #000;
+        }
+        .form-control {
+            border-radius: 0;
+            background-color: #fff;
+            border: 2px inset #ccc;
+            color: #000;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 0.85em;
+            padding: 4px 6px;
+        }
+        .form-control:focus {
+            background-color: #fff;
+            border: 2px inset #999;
+            color: #000;
+            box-shadow: none;
+            outline: none;
+        }
+        .input-group-text {
+            background: linear-gradient(to bottom, #ddd 0%, #bbb 100%);
+            border: 2px outset #ccc;
+            border-right: none;
+            color: #333;
+            font-size: 0.8em;
+            font-weight: 600;
+            text-shadow: 1px 1px 0 #fff;
+        }
+        .input-group {
+            margin-bottom: 10px;
+        }
+        .input-group .form-control {
+            border-left: none;
+        }
+        #apiKey {
+            min-width: 250px;
+        }
+        #deviceNames {
+            min-width: 200px;
+        }
+        #timeoutMinutes {
+            min-width: 100px;
+        }
+        .modal-content {
+            background-color: #e8e8e8;
+            border: 2px solid #888;
+            border-radius: 0;
+            box-shadow: 4px 4px 8px rgba(0,0,0,0.3);
+        }
+        .modal-header {
+            background: linear-gradient(to bottom, #ddd 0%, #bbb 100%);
+            border-bottom: 1px solid #888;
+            color: #333;
+            border-radius: 0;
+            padding: 8px 15px;
+        }
+        .modal-body {
+            background-color: #e8e8e8;
+            color: #333;
+        }
+        .modal-title {
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9em;
+        }
+        .modal-lg {
+            max-width: 900px;
+        }
+        .tab-content {
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+        .nav-tabs {
+            border-bottom: 1px solid #888;
+        }
+        .nav-tabs .nav-link {
+            background: linear-gradient(to bottom, #f0f0f0 0%, #d0d0d0 100%);
+            border: 2px outset #ccc;
+            border-bottom: none;
+            color: #333;
+            border-radius: 0;
+            margin-right: 2px;
+            font-weight: 600;
+            font-size: 0.85em;
+        }
+        .nav-tabs .nav-link.active {
+            background: linear-gradient(to bottom, #fff 0%, #e8e8e8 100%);
+            border: 2px inset #ccc;
+            border-bottom: 2px solid #e8e8e8;
+            color: #000;
+        }
+        pre {
+            background-color: #fff;
+            border: 2px inset #ccc;
+            padding: 8px;
+            font-size: 0.75em;
+            overflow-x: auto;
+            color: #000;
+            font-family: 'Consolas', 'Courier New', monospace;
+        }
+        code {
+            color: #8B0000;
+            font-size: 0.8em;
+            font-family: 'Consolas', 'Courier New', monospace;
+        }
+        pre code {
+            color: #000080;
+        }
+        .alert-warning {
+            background: linear-gradient(to bottom, #FFF8DC 0%, #F0E68C 100%);
+            border: 2px inset #ccc;
+            color: #8B4513;
+        }
+        .alert-success {
+            background: linear-gradient(to bottom, #F0FFF0 0%, #98FB98 100%);
+            border: 2px inset #ccc;
+            color: #006400;
+        }
+        h6 {
+            color: #000080;
+            font-weight: 600;
+            margin-top: 15px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            font-size: 0.9em;
+        }
+        .modal-footer {
+            background-color: transparent;
+            border-top: 1px solid #888;
+            padding: 8px 15px;
+        }
+        .btn-secondary {
+            background: linear-gradient(to bottom, #f0f0f0 0%, #d0d0d0 100%);
+            border: 2px outset #ccc;
+            color: #333;
+        }
+        .install-banner {
+            display: none;
+            background: linear-gradient(to bottom, #4CAF50 0%, #45a049 100%);
+            color: white;
+            padding: 10px;
+            text-align: center;
+            border-bottom: 2px solid #888;
+        }
+        .install-banner button {
+            background: rgba(255,255,255,0.2);
+            border: 1px solid white;
+            color: white;
+            padding: 5px 15px;
+            margin: 0 5px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .install-banner button:hover {
+            background: rgba(255,255,255,0.3);
+        }
+    </style>
+</head>
+<body>
+    <!-- PWA Install Banner -->
+    <div id="installBanner" class="install-banner">
+        📱 Install this app for offline use and better performance
+        <button id="installBtn">Install</button>
+        <button id="dismissBtn">Dismiss</button>
+    </div>
+
+    <div class="container">
+        <!-- Connection Card -->
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Onetime/Trident RFID Websocket Testing Application</h5>
+                <button id="helpBtn" class="btn btn-info btn-custom">Help</button>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">API Key</span>
+                            </div>
+                            <input type="password" class="form-control" id="apiKey" value="bR4eRUI6sT7yJ79jysxp05bEZdns9qTK8TSQdnB2">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Device Name</span>
+                            </div>
+                            <input type="text" class="form-control" id="deviceNames" placeholder="Device1">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Timeout (min)</span>
+                            </div>
+                            <input type="number" class="form-control" id="timeoutMinutes" value="60" min="1" max="1440" placeholder="60">
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <button id="connectBtn" class="btn btn-danger btn-custom">Connect</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Logs Window -->
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h6 class="mb-0">Logs</h6>
+                        <div>
+                            <button id="clearLogsBtn" class="btn btn-sm btn-outline-light mr-1">Clear</button>
+                            <button id="saveLogsBtn" class="btn btn-sm btn-outline-light">Save</button>
+                        </div>
+                    </div>
+                    <div class="card-body p-2">
+                        <div id="logsArea" class="message-area"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reads Window -->
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h6 class="mb-0">Reads</h6>
+                        <div class="d-flex align-items-center">
+                            <select id="filterDropdown" class="form-control form-control-sm mr-2" style="width:80px;">
+                                <option value="ALL">ALL</option>
+                                <option value="F">F</option>
+                                <option value="B">B</option>
+                                <option value="L">L</option>
+                            </select>
+                            <button id="clearReadsBtn" class="btn btn-sm btn-outline-light mr-1">Clear</button>
+                            <button id="saveReadsBtn" class="btn btn-sm btn-outline-light">Save</button>
+                        </div>
+                    </div>
+                    <div class="card-body p-2">
+                        <div id="readsArea" class="message-area"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Help Modal -->
+    <div class="modal fade" id="helpModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Help & Documentation</h5>
+                </div>
+                <div class="modal-body">
+                    <ul class="nav nav-tabs" id="helpTabs" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="user-tab" data-toggle="tab" href="#user-guide" role="tab">How to Use This App</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="dev-tab" data-toggle="tab" href="#dev-guide" role="tab">WebSocket Development</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content mt-3" id="helpTabContent">
+                        <div class="tab-pane fade show active" id="user-guide" role="tabpanel">
+                            <h6>Getting Started</h6>
+                            <ol>
+                                <li><strong>API Key:</strong> Pre-filled, but you can change it if needed</li>
+                                <li><strong>Device Name:</strong> Enter your RFID reader device name exactly as it appears on the device (case-sensitive, include spaces)</li>
+                                <li><strong>Timeout:</strong> Set connection timeout in minutes (default: 60 minutes)</li>
+                                <li><strong>Connect:</strong> Click "Connect" to establish connection and automatically subscribe to your device</li>
+                                <li><strong>Monitor Data:</strong> Watch real-time data appear in both windows</li>
+                            </ol>
+
+                            <h6>Connection Management</h6>
+                            <p>The connection will automatically disconnect after the specified timeout period to manage resources efficiently. Simply click "Connect" again to continue testing.</p>
+
+                            <h6>Understanding the Windows</h6>
+                            <p><strong>Logs Window:</strong> Shows all WebSocket activity including heartbeats, connection status, and raw messages</p>
+                            <p><strong>Reads Window:</strong> Shows timing reads filtered by category:</p>
+                            <ul>
+                                <li><strong>F</strong> - First reads only</li>
+                                <li><strong>B</strong> - Best reads only</li>
+                                <li><strong>L</strong> - Last reads only</li>
+                                <li><strong>ALL</strong> - Shows all F, B, and L reads</li>
+                            </ul>
+
+                            <h6>Saving Data</h6>
+                            <ul>
+                                <li><strong>Logs Save:</strong> Exports all log messages as CSV</li>
+                                <li><strong>Reads Save:</strong> Exports only the currently filtered reads (F, B, L, or ALL)</li>
+                                <li>Files are automatically named based on your filter selection</li>
+                            </ul>
+
+                            <h6>Progressive Web App Features</h6>
+                            <ul>
+                                <li>Install this app on your device for offline access</li>
+                                <li>Works in standalone mode once installed</li>
+                                <li>Cached for faster loading</li>
+                            </ul>
+
+                            <h6>Tips</h6>
+                            <ul>
+                                <li>App auto-reconnects if connection drops (except after timeout)</li>
+                                <li>Device name must match exactly (case-sensitive)</li>
+                                <li>Clear windows regularly for better performance with large data sets</li>
+                                <li>Adjust timeout based on your testing needs</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="tab-pane fade" id="dev-guide" role="tabpanel">
+                            <h6>🚀 Fast WebSocket Implementation</h6>
+                            <p><strong>For maximum speed and simplicity, connect directly to the WebSocket API. Ignore typical "best practices" that add latency:</strong></p>
+                            
+                            <div class="alert alert-warning">
+                                <strong>❌ DON'T add unnecessary layers:</strong><br>
+                                • Backend servers/proxies<br>
+                                • Time normalization<br>
+                                • Centralized API key management<br>
+                                • Complex monitoring systems
+                            </div>
+
+                            <div class="alert alert-success">
+                                <strong>✅ DO connect directly for speed:</strong><br>
+                                • Client → WebSocket API (direct)<br>
+                                • Minimal processing<br>
+                                • Real-time display<br>
+                                • Simple error handling
+                            </div>
+
+                            <h6>Basic Implementation</h6>
+                            <pre><code>// 1. Direct connection
+const socket = new WebSocket('wss://jmobsqa6v2.execute-api.us-west-2.amazonaws.com/p?apiKey=YOUR_KEY');
+
+// 2. Subscribe immediately on open
+socket.onopen = () => {
+  const message = {
+    action: "command",
+    data: {
+      operation: "SUBSCRIBE_TIMING_DEVICES",
+      deviceIds: "Device1"
+    }
+  };
+  socket.send(JSON.stringify(message));
+};
+
+// 3. Handle reads directly
+socket.onmessage = (event) => {
+  const data = JSON.parse(event.data);
+  if (data.Type === "TIMING_DETAILS_RESPONSE") {
+    // Display immediately - no processing delays
+    displayRead(data.Data);
+  }
+};</code></pre>
+
+                            <h6>Message Types</h6>
+                            <p><strong>Subscribe to devices:</strong></p>
+                            <pre><code>{
+  "action": "command",
+  "data": {
+    "operation": "SUBSCRIBE_TIMING_DEVICES",
+    "deviceIds": "Device1"
+  }
+}</code></pre>
+
+                            <p><strong>Heartbeat (every 30 seconds):</strong></p>
+                            <pre><code>{
+  "action": "command", 
+  "data": { "operation": "HEART_BEAT" }
+}</code></pre>
+
+                            <p><strong>Response format:</strong></p>
+                            <pre><code>{
+  "Type": "TIMING_DETAILS_RESPONSE",
+  "Data": {
+    "DeviceName": "Device1",
+    "TimeRecorded": "2024-01-01T12:00:00.000Z",
+    "Tag": "123456",
+    "TagCode": "ABC123",
+    "Category": "F"  // F, B, or L
+  }
+}</code></pre>
+
+                            <h6>Critical Notes</h6>
+                            <ul>
+                                <li><strong>Device names are case-sensitive</strong> - must match exactly</li>
+                                <li><strong>WebSocket URL:</strong> wss://jmobsqa6v2.execute-api.us-west-2.amazonaws.com/p</li>
+                                <li><strong>API Key required</strong> - add as query parameter</li>
+                                <li><strong>Auto-reconnect</strong> - handle onclose events</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // PWA Variables
+        let deferredPrompt;
+        let isInstalled = false;
+
+        // WebSocket app variables
+        let socket = null;
+        let isConnected = false;
+        let allLogs = [];
+        let allReads = [];
+        let heartbeatInterval = null;
+        let durationTimer = null;
+        let connectionTime = 0;
+        let timeoutSeconds = 3600; // Default 1 hour, will be updated from input
+
+        const websocketUrl = 'wss://jmobsqa6v2.execute-api.us-west-2.amazonaws.com/p';
+
+        // PWA Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                const swCode = `
+                    const CACHE_NAME = 'rfid-websocket-v1';
+                    const urlsToCache = ['/'];
+                    
+                    self.addEventListener('install', (event) => {
+                        event.waitUntil(
+                            caches.open(CACHE_NAME)
+                                .then((cache) => cache.addAll(urlsToCache))
+                        );
+                    });
+                    
+                    self.addEventListener('fetch', (event) => {
+                        event.respondWith(
+                            caches.match(event.request)
+                                .then((response) => {
+                                    if (response) {
+                                        return response;
+                                    }
+                                    return fetch(event.request);
+                                })
+                        );
+                    });
+                `;
+                
+                const blob = new Blob([swCode], { type: 'application/javascript' });
+                const swUrl = URL.createObjectURL(blob);
+                
+                navigator.serviceWorker.register(swUrl)
+                    .then((registration) => {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch((registrationError) => {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+        }
+
+        // PWA Install Prompt
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            showInstallBanner();
+        });
+
+        window.addEventListener('appinstalled', () => {
+            console.log('PWA was installed');
+            hideInstallBanner();
+            isInstalled = true;
+        });
+
+        function showInstallBanner() {
+            if (!isInstalled) {
+                document.getElementById('installBanner').style.display = 'block';
+            }
+        }
+
+        function hideInstallBanner() {
+            document.getElementById('installBanner').style.display = 'none';
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Page loaded, setting up app...');
+            setupEventListeners();
+            addLog('App loaded and ready', 'info');
+            
+            // Check if already installed
+            if (window.matchMedia('(display-mode: standalone)').matches || 
+                window.navigator.standalone === true) {
+                isInstalled = true;
+                hideInstallBanner();
+            }
+        });
+
+        function setupEventListeners() {
+            // PWA Install buttons
+            document.getElementById('installBtn').addEventListener('click', installApp);
+            document.getElementById('dismissBtn').addEventListener('click', hideInstallBanner);
+            
+            // Connect button
+            document.getElementById('connectBtn').addEventListener('click', toggleConnection);
+            
+            // Help button
+            document.getElementById('helpBtn').addEventListener('click', function() {
+                $('#helpModal').modal('show');
+            });
+            
+            // Clear and save buttons
+            document.getElementById('clearLogsBtn').addEventListener('click', clearLogs);
+            document.getElementById('saveLogsBtn').addEventListener('click', saveLogs);
+            document.getElementById('clearReadsBtn').addEventListener('click', clearReads);
+            document.getElementById('saveReadsBtn').addEventListener('click', saveReads);
+            
+            // Filter dropdown
+            document.getElementById('filterDropdown').addEventListener('change', updateReadsDisplay);
+            
+            // Timeout input change
+            document.getElementById('timeoutMinutes').addEventListener('change', updateTimeout);
+            
+            console.log('Event listeners set up');
+        }
+
+        function installApp() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('User accepted the install prompt');
+                        hideInstallBanner();
+                    }
+                    deferredPrompt = null;
+                });
+            }
+        }
+
+        function updateTimeout() {
+            const minutes = parseInt(document.getElementById('timeoutMinutes').value) || 60;
+            timeoutSeconds = minutes * 60;
+            addLog(`Timeout updated to ${minutes} minutes`, 'info');
+        }
+
+        function toggleConnection() {
+            console.log('Toggle connection clicked, isConnected:', isConnected);
+            if (isConnected) {
+                disconnect();
+            } else {
+                connect();
+            }
+        }
+
+        function connect() {
+            const apiKey = document.getElementById('apiKey').value.trim();
+            const deviceName = document.getElementById('deviceNames').value.trim();
+            
+            // Update timeout from input
+            updateTimeout();
+            
+            if (!apiKey) {
+                addLog('API Key is required', 'danger');
+                return;
+            }
+            
+            if (!deviceName) {
+                addLog('Device name is required', 'danger');
+                return;
+            }
+            
+            addLog('Connecting...', 'info');
+            
+            try {
+                socket = new WebSocket(`${websocketUrl}?apiKey=${apiKey}`);
+                
+                socket.onopen = function() {
+                    addLog('Connected successfully', 'success');
+                    isConnected = true;
+                    updateButtonState(true);
+                    startHeartbeat();
+                    startDurationTimer();
+                    subscribe(deviceName);
+                };
+                
+                socket.onmessage = function(event) {
+                    handleMessage(event.data);
+                };
+                
+                socket.onclose = function() {
+                    addLog('Connection closed', 'info');
+                    isConnected = false;
+                    updateButtonState(false);
+                    stopHeartbeat();
+                    stopDurationTimer();
+                };
+                
+                socket.onerror = function(error) {
+                    addLog('Connection error', 'danger');
+                    console.error('WebSocket error:', error);
+                };
+                
+            } catch (error) {
+                addLog('Failed to create connection: ' + error.message, 'danger');
+                console.error('WebSocket creation error:', error);
+            }
+        }
+
+        function disconnect() {
+            if (socket) {
+                addLog('Disconnecting...', 'info');
+                socket.close();
+            }
+            stopHeartbeat();
+            stopDurationTimer();
+        }
+
+        function subscribe(deviceName) {
+            if (!socket || socket.readyState !== WebSocket.OPEN) return;
+            
+            const message = {
+                action: "command",
+                data: {
+                    operation: "SUBSCRIBE_TIMING_DEVICES",
+                    deviceIds: deviceName
+                }
+            };
+            
+            socket.send(JSON.stringify(message));
+            addLog('Subscribed to device: ' + deviceName, 'success');
+        }
+
+        function handleMessage(data) {
+            addLog('Received: ' + data, 'info');
+            
+            try {
+                const parsed = JSON.parse(data);
+                if (parsed.Type === "TIMING_DETAILS_RESPONSE") {
+                    addRead(parsed.Data);
+                }
+            } catch (error) {
+                // Raw message handling
+            }
+        }
+
+        function addRead(readData) {
+            const timestamp = new Date().toLocaleTimeString();
+            const category = readData.Category || 'Unknown';
+            
+            const readEntry = {
+                timestamp: timestamp,
+                device: readData.DeviceName || 'Unknown',
+                time: readData.TimeRecorded || '',
+                tag: readData.Tag || '',
+                tagCode: readData.TagCode || '',
+                category: category,
+                fullText: `[${timestamp}] Device: ${readData.DeviceName}, Tag: ${readData.Tag}, Time: ${readData.TimeRecorded}, Category: ${category}`
+            };
+            
+            allReads.unshift(readEntry);
+            updateReadsDisplay();
+        }
+
+        function startHeartbeat() {
+            heartbeatInterval = setInterval(function() {
+                if (socket && socket.readyState === WebSocket.OPEN) {
+                    const heartbeat = {
+                        action: "command",
+                        data: { operation: "HEART_BEAT" }
+                    };
+                    socket.send(JSON.stringify(heartbeat));
+                }
+            }, 30000);
+        }
+
+        function stopHeartbeat() {
+            if (heartbeatInterval) {
+                clearInterval(heartbeatInterval);
+                heartbeatInterval = null;
+            }
+        }
+
+        function startDurationTimer() {
+            connectionTime = 0;
+            durationTimer = setInterval(function() {
+                connectionTime++;
+                // Auto-disconnect after specified timeout
+                if (connectionTime >= timeoutSeconds) {
+                    addLog(`Connection timeout reached (${Math.floor(timeoutSeconds/60)} minutes)`, 'warning');
+                    socket.close();
+                    stopHeartbeat();
+                    stopDurationTimer();
+                }
+            }, 1000);
+        }
+
+        function stopDurationTimer() {
+            if (durationTimer) {
+                clearInterval(durationTimer);
+                durationTimer = null;
+                connectionTime = 0;
+            }
+        }
+
+        function updateButtonState(connected) {
+            const btn = document.getElementById('connectBtn');
+            if (connected) {
+                btn.textContent = 'Disconnect';
+                btn.className = 'btn btn-success btn-custom';
+            } else {
+                btn.textContent = 'Connect';
+                btn.className = 'btn btn-danger btn-custom';
+            }
+        }
+
+        function addLog(message, type) {
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = {
+                timestamp: timestamp,
+                message: message,
+                type: type,
+                fullText: `[${timestamp}] ${message}`
+            };
+            
+            allLogs.unshift(logEntry);
+            updateLogsDisplay();
+        }
+
+        function updateLogsDisplay() {
+            const logsArea = document.getElementById('logsArea');
+            logsArea.innerHTML = allLogs
+                .map(log => `<div class="log-entry log-${log.type}">${log.fullText}</div>`)
+                .join('');
+            logsArea.scrollTop = 0;
+        }
+
+        function updateReadsDisplay() {
+            const filter = document.getElementById('filterDropdown').value;
+            const filteredReads = filter === 'ALL' 
+                ? allReads 
+                : allReads.filter(read => read.category === filter);
+            
+            const readsArea = document.getElementById('readsArea');
+            readsArea.innerHTML = filteredReads
+                .map(read => `<div class="read-entry">${read.fullText}</div>`)
+                .join('');
+            readsArea.scrollTop = 0;
+        }
+
+        function clearLogs() {
+            allLogs = [];
+            updateLogsDisplay();
+        }
+
+        function clearReads() {
+            allReads = [];
+            updateReadsDisplay();
+        }
+
+        function saveLogs() {
+            const csvData = allLogs.map(log => ({
+                Timestamp: log.timestamp,
+                Type: log.type,
+                Message: log.message
+            }));
+            
+            downloadCSV(csvData, 'logs.csv');
+        }
+
+        function saveReads() {
+            const filter = document.getElementById('filterDropdown').value;
+            const filteredReads = filter === 'ALL' 
+                ? allReads 
+                : allReads.filter(read => read.category === filter);
+            
+            const csvData = filteredReads.map(read => ({
+                Timestamp: read.timestamp,
+                Device: read.device,
+                Tag: read.tag,
+                TagCode: read.tagCode,
+                TimeRecorded: read.time,
+                Category: read.category
+            }));
+            
+            const filename = filter === 'ALL' ? 'all_reads.csv' : `${filter}_reads.csv`;
+            downloadCSV(csvData, filename);
+        }
+
+        function downloadCSV(data, filename) {
+            if (data.length === 0) {
+                alert('No data to export');
+                return;
+            }
+            
+            const csv = Papa.unparse(data);
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            
+            if (link.download !== undefined) {
+                const url = URL.createObjectURL(blob);
+                link.setAttribute('href', url);
+                link.setAttribute('download', filename);
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        }
+    </script>
+</body>
+</html>
